@@ -1,4 +1,4 @@
-# JJV Errors (jjve)
+# JJV Errors (jjve) [![Build Status](https://travis-ci.org/silas/jjve.png?branch=master)](https://travis-ci.org/silas/jjve)
 
 This is a library to render [JJV][jjv] validation output.
 
