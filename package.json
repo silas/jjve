@@ -5,6 +5,7 @@
   "main": "jjve.js",
   "devDependencies": {
     "jjv": "^1.0.0",
+    "jscs": "^1.4.5",
     "jshint": "^2.5.1",
     "mocha": "^1.19.0",
     "should": "^3.3.1"
@@ -28,8 +29,5 @@
   "bugs": {
     "url": "https://github.com/silas/jjve/issues"
   },
-  "homepage": "https://github.com/silas/jjve",
-  "dependencies": {
-    "jscs": "^1.4.5"
-  }
+  "homepage": "https://github.com/silas/jjve"
 }
