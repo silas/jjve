@@ -1,0 +1,31 @@
+{
+  "name": "jjve",
+  "version": "0.1.0",
+  "description": "Render JJV errors",
+  "main": "jjve.js",
+  "devDependencies": {
+    "jjv": "^1.0.0",
+    "mocha": "^1.19.0",
+    "should": "^3.3.1"
+  },
+  "scripts": {
+    "test": "mocha --recursive"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/silas/jjve.git"
+  },
+  "keywords": [
+    "jjv",
+    "json",
+    "schema",
+    "jsonschema",
+    "errors"
+  ],
+  "author": "Silas Sewell <silas@sewell.org>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/silas/jjve/issues"
+  },
+  "homepage": "https://github.com/silas/jjve"
+}
