@@ -5,11 +5,12 @@
   "main": "jjve.js",
   "devDependencies": {
     "jjv": "^1.0.0",
+    "jshint": "^2.5.1",
     "mocha": "^1.19.0",
     "should": "^3.3.1"
   },
   "scripts": {
-    "test": "mocha --recursive"
+    "test": "./node_modules/.bin/jshint jjve.js test && ./node_modules/.bin/jscs jjve.js test && ./node_modules/.bin/mocha --recursive"
   },
   "repository": {
     "type": "git",
@@ -27,5 +28,8 @@
   "bugs": {
     "url": "https://github.com/silas/jjve/issues"
   },
-  "homepage": "https://github.com/silas/jjve"
+  "homepage": "https://github.com/silas/jjve",
+  "dependencies": {
+    "jscs": "^1.4.5"
+  }
 }

@@ -1,4 +1,6 @@
 (function() {
+  'use strict';
+
   function make(o) {
     var errors = [];
 
@@ -14,7 +16,7 @@
       // step through each validation issue
       // example: { required: true }
       keys.forEach(function(key) {
-        var error;
+        var error, properties;
 
         switch (key) {
           case 'type':
@@ -30,37 +32,42 @@
             // the value of type is the required type (ex: { type: 'string' })
             error = {
               code: 'INVALID_TYPE',
-              message: 'Invalid type: ' + type + ' should be ' + o.validation[key],
+              message: 'Invalid type: ' + type + ' should be ' +
+                       o.validation[key],
             };
 
             break;
           case 'required':
-            var properties = o.ns.split(o.sep);
+            properties = o.ns.split(o.sep);
 
             error = {
               code: 'OBJECT_REQUIRED',
-              message: 'Missing required property: ' + properties[properties.length-1],
+              message: 'Missing required property: ' +
+                       properties[properties.length - 1],
             };
 
             break;
           case 'minimum':
             error = {
               code: 'MINIMUM',
-              message: 'Value ' + o.data + ' is less than minimum ' + o.schema.minimum,
+              message: 'Value ' + o.data + ' is less than minimum ' +
+                       o.schema.minimum,
             };
 
             break;
           case 'maximum':
             error = {
               code: 'MAXIMUM',
-              message: 'Value ' + o.data + ' is greater than maximum ' + o.schema.maximum,
+              message: 'Value ' + o.data + ' is greater than maximum ' +
+                       o.schema.maximum,
             };
 
             break;
           case 'multipleOf':
             error = {
               code: 'MULTIPLE_OF',
-              message: 'Value ' + o.data + ' is not a multiple of ' + o.schema.multipleOf,
+              message: 'Value ' + o.data + ' is not a multiple of ' +
+                       o.schema.multipleOf,
             };
 
             break;
@@ -74,28 +81,32 @@
           case 'minLength':
             error = {
               code: 'MIN_LENGTH',
-              message: 'String is too short (' + o.data.length + ' chars), minimum ' + o.schema.minLength,
+              message: 'String is too short (' + o.data.length + ' chars), ' +
+                       'minimum ' + o.schema.minLength,
             };
 
             break;
           case 'maxLength':
             error = {
               code: 'MAX_LENGTH',
-              message: 'String is too long (' + o.data.length + ' chars), maximum ' + o.schema.maxLength,
+              message: 'String is too long (' + o.data.length + ' chars), ' +
+                       'maximum ' + o.schema.maxLength,
             };
 
             break;
           case 'minItems':
             error = {
               code: 'ARRAY_LENGTH_SHORT',
-              message: 'Array is too short (' + o.data.length + '), minimum ' + o.schema.minItems,
+              message: 'Array is too short (' + o.data.length + '), minimum ' +
+                       o.schema.minItems,
             };
 
             break;
           case 'maxItems':
             error = {
               code: 'ARRAY_LENGTH_LONG',
-              message: 'Array is too long (' + o.data.length + '), maximum ' + o.schema.maxItems,
+              message: 'Array is too long (' + o.data.length + '), maximum ' +
+                       o.schema.maxItems,
             };
 
             break;
@@ -109,21 +120,26 @@
           case 'minProperties':
             error = {
               code: 'OBJECT_PROPERTIES_MINIMUM',
-              message: 'Too few properties defined (' + Object.keys(o.data).length + '), minimum ' + o.schema.minProperties,
+              message: 'Too few properties defined (' +
+                       Object.keys(o.data).length + '), minimum ' +
+                       o.schema.minProperties,
             };
 
             break;
           case 'maxProperties':
             error = {
               code: 'OBJECT_PROPERTIES_MAXIMUM',
-              message: 'Too many properties defined (' + Object.keys(o.data).length + '), maximum ' + o.schema.maxProperties,
+              message: 'Too many properties defined (' +
+                       Object.keys(o.data).length + '), maximum ' +
+                       o.schema.maxProperties,
             };
 
             break;
           case 'enum':
             error = {
               code: 'ENUM_MISMATCH',
-              message: 'No enum match (' + o.data + '), expects: ' + o.schema.enum.join(', '),
+              message: 'No enum match (' + o.data + '), expects: ' +
+                       o.schema.enum.join(', '),
             };
 
             break;
@@ -135,11 +151,12 @@
 
             break;
           case 'additional':
-            var properties = o.ns.split(o.sep);
+            properties = o.ns.split(o.sep);
 
             error = {
               code: 'ADDITIONAL_PROPERTIES',
-              message: 'Additional properties not allowed: ' + properties[properties.length-1],
+              message: 'Additional properties not allowed: ' +
+                       properties[properties.length - 1],
             };
 
             break;
@@ -147,7 +164,8 @@
             // for all the validation errors I haven't implemented yet
             error = {
               code: 'UNKNOWN_ERROR',
-              message: 'Validation error: ' + key + ' (' + o.validation[key] + ')',
+              message: 'Validation error: ' + key + ' (' + o.validation[key] +
+                       ')',
             };
         }
 
@@ -191,7 +209,9 @@
         errors = errors.concat(make({
           schema: s,
           data: o.data[isArray ? parseInt(key, 10) : key],
-          validation: o.validation[key].schema ? o.validation[key].schema : o.validation[key],
+          validation: o.validation[key].schema ?
+                        o.validation[key].schema :
+                        o.validation[key],
           ns: o.ns + (isArray ? '[' + key + ']' : (o.sep + key)),
           sep: o.sep,
         }));

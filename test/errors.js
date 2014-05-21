@@ -4,8 +4,8 @@
  * Module dependencies.
  */
 
+require('should');
 var jjv = require('jjv');
-var should = require('should');
 
 var jjve = require('../jjve');
 
@@ -34,7 +34,7 @@ describe('jjve', function() {
     });
 
     it('shound handle undefined base type', function() {
-      var data = undefined;
+      var data;
       var schema = { type: 'object' };
 
       this.run(schema, data).should.eql([
