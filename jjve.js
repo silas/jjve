@@ -18,168 +18,192 @@
       keys.forEach(function(key) {
         var error, properties;
 
-        switch (key) {
-          case 'type':
-            var type = typeof o.data;
+        try {
+          switch (key) {
+            case 'type':
+              var type = typeof o.data;
 
-            // further discover types
-            if (type === 'number' && ('' + o.data).match(/^\d+$/)) {
-              type = 'integer';
-            } else if (type === 'object' && Array.isArray(o.data)) {
-              type = 'array';
+              // further discover types
+              if (type === 'number' && ('' + o.data).match(/^\d+$/)) {
+                type = 'integer';
+              } else if (type === 'object' && Array.isArray(o.data)) {
+                type = 'array';
+              }
+
+              // the value of type is the required type (ex: { type: 'string' })
+              error = {
+                code: 'INVALID_TYPE',
+                message: 'Invalid type: ' + type + ' should be ' +
+                         o.validation[key],
+              };
+
+              break;
+            case 'required':
+              properties = o.ns.split(o.sep);
+
+              error = {
+                code: 'OBJECT_REQUIRED',
+                message: 'Missing required property: ' +
+                         properties[properties.length - 1],
+              };
+
+              break;
+            case 'minimum':
+              error = {
+                code: 'MINIMUM',
+                message: 'Value ' + o.data + ' is less than minimum ' +
+                         o.schema.minimum,
+              };
+
+              break;
+            case 'maximum':
+              error = {
+                code: 'MAXIMUM',
+                message: 'Value ' + o.data + ' is greater than maximum ' +
+                         o.schema.maximum,
+              };
+
+              break;
+            case 'multipleOf':
+              error = {
+                code: 'MULTIPLE_OF',
+                message: 'Value ' + o.data + ' is not a multiple of ' +
+                         o.schema.multipleOf,
+              };
+
+              break;
+            case 'pattern':
+              error = {
+                code: 'PATTERN',
+                message: 'String does not match pattern: ' + o.schema.pattern,
+              };
+
+              break;
+            case 'minLength':
+              error = {
+                code: 'MIN_LENGTH',
+                message: 'String is too short (' + o.data.length + ' chars), ' +
+                         'minimum ' + o.schema.minLength,
+              };
+
+              break;
+            case 'maxLength':
+              error = {
+                code: 'MAX_LENGTH',
+                message: 'String is too long (' + o.data.length + ' chars), ' +
+                         'maximum ' + o.schema.maxLength,
+              };
+
+              break;
+            case 'minItems':
+              error = {
+                code: 'ARRAY_LENGTH_SHORT',
+                message: 'Array is too short (' + o.data.length + '), ' +
+                         'minimum ' + o.schema.minItems,
+              };
+
+              break;
+            case 'maxItems':
+              error = {
+                code: 'ARRAY_LENGTH_LONG',
+                message: 'Array is too long (' + o.data.length + '), maximum ' +
+                         o.schema.maxItems,
+              };
+
+              break;
+            case 'uniqueItems':
+              error = {
+                code: 'ARRAY_UNIQUE',
+                message: 'Array items are not unique',
+              };
+
+              break;
+            case 'minProperties':
+              error = {
+                code: 'OBJECT_PROPERTIES_MINIMUM',
+                message: 'Too few properties defined (' +
+                         Object.keys(o.data).length + '), minimum ' +
+                         o.schema.minProperties,
+              };
+
+              break;
+            case 'maxProperties':
+              error = {
+                code: 'OBJECT_PROPERTIES_MAXIMUM',
+                message: 'Too many properties defined (' +
+                         Object.keys(o.data).length + '), maximum ' +
+                         o.schema.maxProperties,
+              };
+
+              break;
+            case 'enum':
+              error = {
+                code: 'ENUM_MISMATCH',
+                message: 'No enum match (' + o.data + '), expects: ' +
+                         o.schema.enum.join(', '),
+              };
+
+              break;
+            case 'not':
+              error = {
+                code: 'NOT_PASSED',
+                message: 'Data matches schema from "not"',
+              };
+
+              break;
+            case 'additional':
+              properties = o.ns.split(o.sep);
+
+              error = {
+                code: 'ADDITIONAL_PROPERTIES',
+                message: 'Additional properties not allowed: ' +
+                         properties[properties.length - 1],
+              };
+
+              break;
+          }
+        } catch (err) {
+          // ignore errors
+        }
+
+        // unhandled errors
+        if (!error) {
+          error = {
+            code: 'FAILED',
+            message: 'Validation error: ' + key,
+          };
+
+          try {
+            if (typeof o.validation[key] !== 'boolean') {
+              error.message = ' (' + o.validation[key] + ')';
             }
-
-            // the value of type is the required type (ex: { type: 'string' })
-            error = {
-              code: 'INVALID_TYPE',
-              message: 'Invalid type: ' + type + ' should be ' +
-                       o.validation[key],
-            };
-
-            break;
-          case 'required':
-            properties = o.ns.split(o.sep);
-
-            error = {
-              code: 'OBJECT_REQUIRED',
-              message: 'Missing required property: ' +
-                       properties[properties.length - 1],
-            };
-
-            break;
-          case 'minimum':
-            error = {
-              code: 'MINIMUM',
-              message: 'Value ' + o.data + ' is less than minimum ' +
-                       o.schema.minimum,
-            };
-
-            break;
-          case 'maximum':
-            error = {
-              code: 'MAXIMUM',
-              message: 'Value ' + o.data + ' is greater than maximum ' +
-                       o.schema.maximum,
-            };
-
-            break;
-          case 'multipleOf':
-            error = {
-              code: 'MULTIPLE_OF',
-              message: 'Value ' + o.data + ' is not a multiple of ' +
-                       o.schema.multipleOf,
-            };
-
-            break;
-          case 'pattern':
-            error = {
-              code: 'PATTERN',
-              message: 'String does not match pattern: ' + o.schema.pattern,
-            };
-
-            break;
-          case 'minLength':
-            error = {
-              code: 'MIN_LENGTH',
-              message: 'String is too short (' + o.data.length + ' chars), ' +
-                       'minimum ' + o.schema.minLength,
-            };
-
-            break;
-          case 'maxLength':
-            error = {
-              code: 'MAX_LENGTH',
-              message: 'String is too long (' + o.data.length + ' chars), ' +
-                       'maximum ' + o.schema.maxLength,
-            };
-
-            break;
-          case 'minItems':
-            error = {
-              code: 'ARRAY_LENGTH_SHORT',
-              message: 'Array is too short (' + o.data.length + '), minimum ' +
-                       o.schema.minItems,
-            };
-
-            break;
-          case 'maxItems':
-            error = {
-              code: 'ARRAY_LENGTH_LONG',
-              message: 'Array is too long (' + o.data.length + '), maximum ' +
-                       o.schema.maxItems,
-            };
-
-            break;
-          case 'uniqueItems':
-            error = {
-              code: 'ARRAY_UNIQUE',
-              message: 'Array items are not unique',
-            };
-
-            break;
-          case 'minProperties':
-            error = {
-              code: 'OBJECT_PROPERTIES_MINIMUM',
-              message: 'Too few properties defined (' +
-                       Object.keys(o.data).length + '), minimum ' +
-                       o.schema.minProperties,
-            };
-
-            break;
-          case 'maxProperties':
-            error = {
-              code: 'OBJECT_PROPERTIES_MAXIMUM',
-              message: 'Too many properties defined (' +
-                       Object.keys(o.data).length + '), maximum ' +
-                       o.schema.maxProperties,
-            };
-
-            break;
-          case 'enum':
-            error = {
-              code: 'ENUM_MISMATCH',
-              message: 'No enum match (' + o.data + '), expects: ' +
-                       o.schema.enum.join(', '),
-            };
-
-            break;
-          case 'not':
-            error = {
-              code: 'NOT_PASSED',
-              message: 'Data matches schema from "not"',
-            };
-
-            break;
-          case 'additional':
-            properties = o.ns.split(o.sep);
-
-            error = {
-              code: 'ADDITIONAL_PROPERTIES',
-              message: 'Additional properties not allowed: ' +
-                       properties[properties.length - 1],
-            };
-
-            break;
-          default:
-            // for all the validation errors I haven't implemented yet
-            error = {
-              code: 'UNKNOWN_ERROR',
-              message: 'Validation error: ' + key + ' (' + o.validation[key] +
-                       ')',
-            };
+          } catch (err) {
+            // ignore errors
+          }
         }
 
-        if (error) {
-          if (o.data !== undefined) error.data = o.data;
-          error.path = o.ns;
-          errors.push(error);
-        }
+        error.code = 'VALIDATION_' + error.code;
+        if (o.data !== undefined) error.data = o.data;
+        error.path = o.ns;
+        errors.push(error);
       });
     } else {
       // handle all non-leaf children
       keys.forEach(function(key) {
         var s;
         var isArray = false;
+
+        if (o.schema.$ref) {
+          if (o.schema.$ref.match(/#\/definitions\//)) {
+            o.schema = o.definitions[o.schema.$ref.slice(14)];
+          } else {
+            o.schema = o.schema.$ref;
+          }
+
+          if (typeof o.schema === 'string') {
+            o.schema = o.env.schema[s];
+          }
+        }
 
         if (o.schema.type) {
           switch (o.schema.type) {
@@ -197,9 +221,12 @@
                 });
               }
 
-              if (!s && o.schema.additionalProperties &&
-                  typeof o.schema.additionalProperties !== 'boolean') {
-                s = o.schema.additionalProperties;
+              if (!s && o.schema.hasOwnProperty('additionalProperties')) {
+                if (typeof o.schema.additionalProperties === 'boolean') {
+                  s = {};
+                } else {
+                  s = o.schema.additionalProperties;
+                }
               }
 
               break;
@@ -211,15 +238,36 @@
           }
         }
 
-        errors = errors.concat(make({
-          schema: s,
-          data: o.data[isArray ? parseInt(key, 10) : key],
-          validation: o.validation[key].schema ?
-                        o.validation[key].schema :
-                        o.validation[key],
+        if (typeof s === 'string') { s = o.env.schema[s]; }
+
+        var opts = {
+          env: o.env,
+          schema: s || {},
           ns: o.ns + (isArray ? '[' + key + ']' : (o.sep + key)),
           sep: o.sep,
-        }));
+        };
+
+        try {
+          opts.data = o.data[isArray ? parseInt(key, 10) : key];
+        } catch (err) {
+          // ignore errors
+        }
+
+        try {
+          opts.validation = o.validation[key].schema ?
+            o.validation[key].schema :
+            o.validation[key];
+        } catch (err) {
+          opts.validation = {};
+        }
+
+        try {
+          opts.definitions = s.definitions || o.definitions;
+        } catch (err) {
+          opts.definitions = o.definitions;
+        }
+
+        errors = errors.concat(make(opts));
       });
     }
 
@@ -234,14 +282,16 @@
 
       if (!options.hasOwnProperty('root')) options.root = '$';
       if (!options.hasOwnProperty('sep')) options.sep = '.';
-      if (typeof schema === 'string') schema = env.schema[schema];
+      if (typeof schema === 'string') { schema = env.schema[schema]; }
 
       return make({
+        env: env,
         schema: schema,
         data: data,
         validation: result.validation,
         sep: options.sep,
         ns: options.root,
+        definitions: schema.definitions || {},
       });
     };
   }

@@ -39,7 +39,7 @@ describe('jjve', function() {
 
       this.run(schema, data).should.eql([
         {
-          code: 'INVALID_TYPE',
+          code: 'VALIDATION_INVALID_TYPE',
           message: 'Invalid type: undefined should be object',
           path: '$',
         }
@@ -52,7 +52,7 @@ describe('jjve', function() {
 
       this.run(schema, data).should.eql([
         {
-          code: 'INVALID_TYPE',
+          code: 'VALIDATION_INVALID_TYPE',
           data: 123,
           message: 'Invalid type: integer should be object',
           path: '$',
@@ -70,7 +70,7 @@ describe('jjve', function() {
 
       this.run(schema, data).should.eql([
         {
-          code: 'OBJECT_REQUIRED',
+          code: 'VALIDATION_OBJECT_REQUIRED',
           message: 'Missing required property: must',
           path: '$.must',
         }
@@ -86,7 +86,7 @@ describe('jjve', function() {
 
       this.run(schema, data).should.eql([
         {
-          code: 'INVALID_TYPE',
+          code: 'VALIDATION_INVALID_TYPE',
           data: {},
           message: 'Invalid type: object should be string',
           path: '$.test',
@@ -103,7 +103,7 @@ describe('jjve', function() {
 
       this.run(schema, data).should.eql([
         {
-          code: 'INVALID_TYPE',
+          code: 'VALIDATION_INVALID_TYPE',
           data: [],
           message: 'Invalid type: array should be string',
           path: '$.test',
@@ -117,7 +117,7 @@ describe('jjve', function() {
 
       this.run(schema, data).should.eql([
         {
-          code: 'MINIMUM',
+          code: 'VALIDATION_MINIMUM',
           data: 50,
           message: 'Value 50 is less than minimum 100',
           path: '$',
@@ -131,7 +131,7 @@ describe('jjve', function() {
 
       this.run(schema, data).should.eql([
         {
-          code: 'MAXIMUM',
+          code: 'VALIDATION_MAXIMUM',
           data: 50,
           message: 'Value 50 is greater than maximum 25',
           path: '$',
@@ -145,7 +145,7 @@ describe('jjve', function() {
 
       this.run(schema, data).should.eql([
         {
-          code: 'MULTIPLE_OF',
+          code: 'VALIDATION_MULTIPLE_OF',
           data: 15,
           message: 'Value 15 is not a multiple of 10',
           path: '$',
@@ -159,7 +159,7 @@ describe('jjve', function() {
 
       this.run(schema, data).should.eql([
         {
-          code: 'PATTERN',
+          code: 'VALIDATION_PATTERN',
           data: 'abc',
           message: 'String does not match pattern: \\d+',
           path: '$',
@@ -173,7 +173,7 @@ describe('jjve', function() {
 
       this.run(schema, data).should.eql([
         {
-          code: 'MIN_LENGTH',
+          code: 'VALIDATION_MIN_LENGTH',
           data: 'abc',
           message: 'String is too short (3 chars), minimum 10',
           path: '$',
@@ -187,7 +187,7 @@ describe('jjve', function() {
 
       this.run(schema, data).should.eql([
         {
-          code: 'MAX_LENGTH',
+          code: 'VALIDATION_MAX_LENGTH',
           data: 'abc',
           message: 'String is too long (3 chars), maximum 2',
           path: '$',
@@ -201,7 +201,7 @@ describe('jjve', function() {
 
       this.run(schema, data).should.eql([
         {
-          code: 'ARRAY_LENGTH_SHORT',
+          code: 'VALIDATION_ARRAY_LENGTH_SHORT',
           data: ['one'],
           message: 'Array is too short (1), minimum 10',
           path: '$',
@@ -215,7 +215,7 @@ describe('jjve', function() {
 
       this.run(schema, data).should.eql([
         {
-          code: 'ARRAY_LENGTH_LONG',
+          code: 'VALIDATION_ARRAY_LENGTH_LONG',
           data: ['one', 'two'],
           message: 'Array is too long (2), maximum 1',
           path: '$',
@@ -229,7 +229,7 @@ describe('jjve', function() {
 
       this.run(schema, data).should.eql([
         {
-          code: 'ARRAY_UNIQUE',
+          code: 'VALIDATION_ARRAY_UNIQUE',
           data: ['one', 'two', 'one'],
           message: 'Array items are not unique',
           path: '$',
@@ -243,7 +243,7 @@ describe('jjve', function() {
 
       this.run(schema, data).should.eql([
         {
-          code: 'OBJECT_PROPERTIES_MINIMUM',
+          code: 'VALIDATION_OBJECT_PROPERTIES_MINIMUM',
           data: { one: 1 },
           message: 'Too few properties defined (1), minimum 2',
           path: '$',
@@ -257,7 +257,7 @@ describe('jjve', function() {
 
       this.run(schema, data).should.eql([
         {
-          code: 'OBJECT_PROPERTIES_MAXIMUM',
+          code: 'VALIDATION_OBJECT_PROPERTIES_MAXIMUM',
           data: { one: 1, two: 2 },
           message: 'Too many properties defined (2), maximum 1',
           path: '$',
@@ -271,7 +271,7 @@ describe('jjve', function() {
 
       this.run(schema, data).should.eql([
         {
-          code: 'ENUM_MISMATCH',
+          code: 'VALIDATION_ENUM_MISMATCH',
           data: 'three',
           message: 'No enum match (three), expects: one, two',
           path: '$',
@@ -285,7 +285,7 @@ describe('jjve', function() {
 
       this.run(schema, data).should.eql([
         {
-          code: 'NOT_PASSED',
+          code: 'VALIDATION_NOT_PASSED',
           data: 'abc',
           message: 'Data matches schema from "not"',
           path: '$',
@@ -307,19 +307,19 @@ describe('jjve', function() {
 
       this.run(schema, data).should.eql([
         {
-          code: 'INVALID_TYPE',
+          code: 'VALIDATION_INVALID_TYPE',
           data: '1',
           message: 'Invalid type: string should be integer',
           path: '$.one'
         },
         {
-          code: 'INVALID_TYPE',
+          code: 'VALIDATION_INVALID_TYPE',
           data: '1',
           message: 'Invalid type: string should be integer',
           path: '$.two.one'
         },
         {
-          code: 'INVALID_TYPE',
+          code: 'VALIDATION_INVALID_TYPE',
           data: 2,
           message: 'Invalid type: integer should be string',
           path: '$.two.two'
@@ -327,13 +327,13 @@ describe('jjve', function() {
       ]);
     });
 
-    it('shound handle additionalProperties (boolean)', function() {
+    it('shound handle additionalProperties (boolean) @test', function() {
       var data = { one: 1 };
       var schema = { type: 'object', additionalProperties: false };
 
       this.run(schema, data).should.eql([
         {
-          code: 'ADDITIONAL_PROPERTIES',
+          code: 'VALIDATION_ADDITIONAL_PROPERTIES',
           data: 1,
           message: 'Additional properties not allowed: one',
           path: '$.one',
@@ -377,7 +377,7 @@ describe('jjve', function() {
 
       this.run(schema, data).should.eql([
         {
-          code: 'INVALID_TYPE',
+          code: 'VALIDATION_INVALID_TYPE',
           message: 'Invalid type: integer should be boolean',
           data: 0,
           path: '$.one[0].two[1].ok',
@@ -398,10 +398,40 @@ describe('jjve', function() {
 
       this.run(schema, data).should.eql([
         {
-          code: 'INVALID_TYPE',
+          code: 'VALIDATION_INVALID_TYPE',
           message: 'Invalid type: boolean should be integer',
           data: true,
           path: '$.ok',
+        }
+      ]);
+    });
+
+    it('shound handle definitions', function() {
+      var data = { one: { two: '3' } };
+      var schema = {
+        type: 'object',
+        properties: {
+          one: { $ref: '#/definitions/one' },
+        },
+        definitions: {
+          one: {
+            type: 'object',
+            properties: {
+              two: {
+                type: 'string',
+                enum: ['1', '2']
+              },
+            },
+          },
+        },
+      };
+
+      this.run(schema, data).should.eql([
+        {
+          code: 'VALIDATION_ENUM_MISMATCH',
+          message: 'No enum match (3), expects: 1, 2',
+          data: '3',
+          path: '$.one.two',
         }
       ]);
     });
