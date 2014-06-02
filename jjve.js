@@ -197,6 +197,11 @@
                 });
               }
 
+              if (!s && o.schema.additionalProperties &&
+                  typeof o.schema.additionalProperties !== 'boolean') {
+                s = o.schema.additionalProperties;
+              }
+
               break;
             case 'array':
               s = o.schema.items;

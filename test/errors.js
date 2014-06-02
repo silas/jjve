@@ -294,6 +294,40 @@ describe('jjve', function() {
     });
 
     it('shound handle additionalProperties', function() {
+      var data = { one: '1', two: { one: '1', two: 2 } };
+      var schema = {
+        type: 'object',
+        properties: { one: { type: 'integer' } },
+        additionalProperties: {
+          type: 'object',
+          properties: { one: { type: 'integer' } },
+          additionalProperties: { type: 'string' },
+        },
+      };
+
+      this.run(schema, data).should.eql([
+        {
+          code: 'INVALID_TYPE',
+          data: '1',
+          message: 'Invalid type: string should be integer',
+          path: '$.one'
+        },
+        {
+          code: 'INVALID_TYPE',
+          data: '1',
+          message: 'Invalid type: string should be integer',
+          path: '$.two.one'
+        },
+        {
+          code: 'INVALID_TYPE',
+          data: 2,
+          message: 'Invalid type: integer should be string',
+          path: '$.two.two'
+        },
+      ]);
+    });
+
+    it('shound handle additionalProperties (boolean)', function() {
       var data = { one: 1 };
       var schema = { type: 'object', additionalProperties: false };
 
