@@ -191,7 +191,6 @@
       // handle all non-leaf children
       keys.forEach(function(key) {
         var s;
-        var isArray = false;
 
         if (o.schema.$ref) {
           if (o.schema.$ref.match(/#\/definitions\//)) {
@@ -201,11 +200,12 @@
           }
 
           if (typeof o.schema === 'string') {
-            o.schema = o.env.schema[s];
+            o.schema = o.env.resolveRef(null, o.schema);
+            if (o.schema) o.schema = o.schema[0];
           }
         }
 
-        if (o.schema.type) {
+        if (o.schema && o.schema.type) {
           switch (o.schema.type) {
             case 'object':
               if (o.schema.properties && o.schema.properties[key]) {
@@ -232,13 +232,12 @@
               break;
             case 'array':
               s = o.schema.items;
-              isArray = true;
 
               break;
           }
         }
 
-        if (typeof s === 'string') { s = o.env.schema[s]; }
+        var isArray = key.match(/^\d+$/);
 
         var opts = {
           env: o.env,
@@ -248,7 +247,7 @@
         };
 
         try {
-          opts.data = o.data[isArray ? parseInt(key, 10) : key];
+          opts.data = o.data[key];
         } catch (err) {
           // ignore errors
         }
