@@ -60,6 +60,20 @@ describe('jjve', function() {
       ]);
     });
 
+    it('should handle invalid base type for type being an array', function() {
+      var data = 123;
+      var schema = { type: ['object', 'null'] };
+
+      this.run(schema, data).should.eql([
+        {
+          code: 'VALIDATION_INVALID_TYPE',
+          data: 123,
+          message: 'Invalid type: integer should be one of object,null',
+          path: '$',
+        }
+      ]);
+    });
+
     it('should handle missing property', function() {
       var data = {};
       var schema = {
