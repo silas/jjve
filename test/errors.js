@@ -26,14 +26,14 @@ describe('jjve', function() {
       };
     });
 
-    it('shound handle empty schema', function() {
+    it('should handle empty schema', function() {
       var data = {};
       var schema = {};
 
       this.run(schema, data).should.eql([]);
     });
 
-    it('shound handle undefined base type', function() {
+    it('should handle undefined base type', function() {
       var data;
       var schema = { type: 'object' };
 
@@ -46,7 +46,7 @@ describe('jjve', function() {
       ]);
     });
 
-    it('shound handle invalid base type', function() {
+    it('should handle invalid base type', function() {
       var data = 123;
       var schema = { type: 'object' };
 
@@ -60,7 +60,7 @@ describe('jjve', function() {
       ]);
     });
 
-    it('shound handle missing property', function() {
+    it('should handle missing property', function() {
       var data = {};
       var schema = {
         type: 'object',
@@ -77,7 +77,7 @@ describe('jjve', function() {
       ]);
     });
 
-    it('shound handle invalid property (object)', function() {
+    it('should handle invalid property (object)', function() {
       var data = { test: {} };
       var schema = {
         type: 'object',
@@ -94,11 +94,11 @@ describe('jjve', function() {
       ]);
     });
 
-    it('shound handle invalid property (array)', function() {
-      var data = { test: [] };
+    it('should handle invalid property (array)', function() {
+      var data = [[]];
       var schema = {
-        type: 'object',
-        properties: { test: { type: 'string' } },
+        type: 'array',
+        items: { type: 'string' },
       };
 
       this.run(schema, data).should.eql([
@@ -106,12 +106,12 @@ describe('jjve', function() {
           code: 'VALIDATION_INVALID_TYPE',
           data: [],
           message: 'Invalid type: array should be string',
-          path: '$.test',
+          path: '$[0]',
         }
       ]);
     });
 
-    it('shound handle minimum', function() {
+    it('should handle minimum', function() {
       var data = 50;
       var schema = { type: 'integer', minimum: 100 };
 
@@ -125,7 +125,7 @@ describe('jjve', function() {
       ]);
     });
 
-    it('shound handle maximum', function() {
+    it('should handle maximum', function() {
       var data = 50;
       var schema = { type: 'integer', maximum: 25 };
 
@@ -139,7 +139,7 @@ describe('jjve', function() {
       ]);
     });
 
-    it('shound handle multipleOf', function() {
+    it('should handle multipleOf', function() {
       var data = 15;
       var schema = { type: 'integer', multipleOf: 10 };
 
@@ -153,7 +153,7 @@ describe('jjve', function() {
       ]);
     });
 
-    it('shound handle pattern', function() {
+    it('should handle pattern', function() {
       var data = 'abc';
       var schema = { type: 'string', pattern: '\\d+' };
 
@@ -167,7 +167,7 @@ describe('jjve', function() {
       ]);
     });
 
-    it('shound handle minLength', function() {
+    it('should handle minLength', function() {
       var data = 'abc';
       var schema = { type: 'string', minLength: 10 };
 
@@ -181,7 +181,7 @@ describe('jjve', function() {
       ]);
     });
 
-    it('shound handle maxLength', function() {
+    it('should handle maxLength', function() {
       var data = 'abc';
       var schema = { type: 'string', maxLength: 2 };
 
@@ -195,7 +195,7 @@ describe('jjve', function() {
       ]);
     });
 
-    it('shound handle minItems', function() {
+    it('should handle minItems', function() {
       var data = ['one'];
       var schema = { type: 'array', minItems: 10 };
 
@@ -209,7 +209,7 @@ describe('jjve', function() {
       ]);
     });
 
-    it('shound handle maxItems', function() {
+    it('should handle maxItems', function() {
       var data = ['one', 'two'];
       var schema = { type: 'array', maxItems: 1 };
 
@@ -223,7 +223,7 @@ describe('jjve', function() {
       ]);
     });
 
-    it('shound handle uniqueItems', function() {
+    it('should handle uniqueItems', function() {
       var data = ['one', 'two', 'one'];
       var schema = { type: 'array', uniqueItems: true };
 
@@ -237,7 +237,7 @@ describe('jjve', function() {
       ]);
     });
 
-    it('shound handle minProperties', function() {
+    it('should handle minProperties', function() {
       var data = { one: 1 };
       var schema = { type: 'object', minProperties: 2 };
 
@@ -251,7 +251,7 @@ describe('jjve', function() {
       ]);
     });
 
-    it('shound handle maxProperties', function() {
+    it('should handle maxProperties', function() {
       var data = { one: 1, two: 2 };
       var schema = { type: 'object', maxProperties: 1 };
 
@@ -265,7 +265,7 @@ describe('jjve', function() {
       ]);
     });
 
-    it('shound handle enum', function() {
+    it('should handle enum', function() {
       var data = 'three';
       var schema = { type: 'string', enum: ['one', 'two'] };
 
@@ -279,7 +279,7 @@ describe('jjve', function() {
       ]);
     });
 
-    it('shound handle not', function() {
+    it('should handle not', function() {
       var data = 'abc';
       var schema = { type: 'string', not: { type: 'string', pattern: 'c$' } };
 
@@ -293,7 +293,7 @@ describe('jjve', function() {
       ]);
     });
 
-    it('shound handle additionalProperties', function() {
+    it('should handle additionalProperties', function() {
       var data = { one: '1', two: { one: '1', two: 2 } };
       var schema = {
         type: 'object',
@@ -327,7 +327,7 @@ describe('jjve', function() {
       ]);
     });
 
-    it('shound handle additionalProperties (boolean) @test', function() {
+    it('should handle additionalProperties (boolean) @test', function() {
       var data = { one: 1 };
       var schema = { type: 'object', additionalProperties: false };
 
@@ -341,7 +341,7 @@ describe('jjve', function() {
       ]);
     });
 
-    it('shound handle arrays', function() {
+    it('should handle arrays', function() {
       var data = {
         one: [
           {
@@ -385,7 +385,7 @@ describe('jjve', function() {
       ]);
     });
 
-    it('shound handle patternProperties', function() {
+    it('should handle patternProperties', function() {
       var data = {
         ok: true
       };
@@ -406,7 +406,7 @@ describe('jjve', function() {
       ]);
     });
 
-    it('shound handle definitions', function() {
+    it('should handle definitions', function() {
       var data = { one: { two: '3' } };
       var schema = {
         type: 'object',
@@ -435,5 +435,25 @@ describe('jjve', function() {
         }
       ]);
     });
+
+    it('should handle type property given as array where leaf schema is needed',
+      function() {
+        var data = { test: 'xyz' };
+        var schema = {
+          type: ['object', 'null'],
+          properties: {
+            test: { type: 'string', pattern: 'abc' }
+          }
+        };
+
+        this.run(schema, data).should.eql([
+          {
+            code: 'VALIDATION_PATTERN',
+            data: "xyz",
+            message: 'String does not match pattern: abc',
+            path: '$.test',
+          }
+        ]);
+      });
   });
 });
