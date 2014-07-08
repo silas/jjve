@@ -2,6 +2,7 @@
 *.pid
 *swp
 .env
+.idea
 .rock.yml
 .vagrant
 config
