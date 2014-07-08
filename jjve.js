@@ -9,7 +9,8 @@
     // when we're on a leaf node we need to handle the validation errors,
     // otherwise we continue walking
     var leaf = keys.every(function(key) {
-      return typeof o.validation[key] !== 'object';
+      return typeof o.validation[key] !== 'object' ||
+        isArray(o.validation[key]);
     });
 
     if (leaf) {
@@ -34,7 +35,8 @@
               error = {
                 code: 'INVALID_TYPE',
                 message: 'Invalid type: ' + type + ' should be ' +
-                         o.validation[key],
+                         (isArray(o.validation[key]) ?  'one of ' :  '') +
+                          o.validation[key],
               };
 
               break;
@@ -274,10 +276,17 @@
     if (typeof schema.type === 'string') {
       return schema.type === type;
     }
-    if (Object.prototype.toString.call(schema.type) === '[object Array]') {
+    if (isArray(schema.type)) {
       return schema.type.indexOf(type) !== -1;
     }
     return false;
+  }
+
+  function isArray(obj) {
+    if (typeof Array.isArray === 'function') {
+      return Array.isArray(obj);
+    }
+    return Object.prototype.toString.call(obj) === '[object Array]';
   }
 
   function jjve(env) {
