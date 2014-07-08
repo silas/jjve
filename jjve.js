@@ -206,34 +206,31 @@
         }
 
         if (o.schema && o.schema.type) {
-          switch (o.schema.type) {
-            case 'object':
-              if (o.schema.properties && o.schema.properties[key]) {
-                s = o.schema.properties[key];
-              }
+          if (allowsType(o.schema, 'object')) {
+            if (o.schema.properties && o.schema.properties[key]) {
+              s = o.schema.properties[key];
+            }
 
-              if (!s && o.schema.patternProperties) {
-                Object.keys(o.schema.patternProperties).some(function(pkey) {
-                  if (key.match(new RegExp(pkey))) {
-                    s = o.schema.patternProperties[pkey];
-                    return true;
-                  }
-                });
-              }
-
-              if (!s && o.schema.hasOwnProperty('additionalProperties')) {
-                if (typeof o.schema.additionalProperties === 'boolean') {
-                  s = {};
-                } else {
-                  s = o.schema.additionalProperties;
+            if (!s && o.schema.patternProperties) {
+              Object.keys(o.schema.patternProperties).some(function(pkey) {
+                if (key.match(new RegExp(pkey))) {
+                  s = o.schema.patternProperties[pkey];
+                  return true;
                 }
+              });
+            }
+
+            if (!s && o.schema.hasOwnProperty('additionalProperties')) {
+              if (typeof o.schema.additionalProperties === 'boolean') {
+                s = {};
+              } else {
+                s = o.schema.additionalProperties;
               }
+            }
+          }
 
-              break;
-            case 'array':
-              s = o.schema.items;
-
-              break;
+          if (allowsType(o.schema, 'array')) {
+            s = o.schema.items;
           }
         }
 
@@ -271,6 +268,16 @@
     }
 
     return errors;
+  }
+
+  function allowsType(schema, type) {
+    if (typeof schema.type === 'string') {
+      return schema.type === type;
+    }
+    if (Object.prototype.toString.call(schema.type) === '[object Array]') {
+      return schema.type.indexOf(type) !== -1;
+    }
+    return false;
   }
 
   function jjve(env) {
