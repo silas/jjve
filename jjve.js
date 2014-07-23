@@ -34,7 +34,7 @@
               error = {
                 code: 'INVALID_TYPE',
                 message: 'Invalid type: ' + type + ' should be ' +
-                         o.validation[key],
+                         o.validation[key]
               };
 
               break;
@@ -44,7 +44,7 @@
               error = {
                 code: 'OBJECT_REQUIRED',
                 message: 'Missing required property: ' +
-                         properties[properties.length - 1],
+                         properties[properties.length - 1]
               };
 
               break;
@@ -52,7 +52,7 @@
               error = {
                 code: 'MINIMUM',
                 message: 'Value ' + o.data + ' is less than minimum ' +
-                         o.schema.minimum,
+                         o.schema.minimum
               };
 
               break;
@@ -60,7 +60,7 @@
               error = {
                 code: 'MAXIMUM',
                 message: 'Value ' + o.data + ' is greater than maximum ' +
-                         o.schema.maximum,
+                         o.schema.maximum
               };
 
               break;
@@ -68,14 +68,14 @@
               error = {
                 code: 'MULTIPLE_OF',
                 message: 'Value ' + o.data + ' is not a multiple of ' +
-                         o.schema.multipleOf,
+                         o.schema.multipleOf
               };
 
               break;
             case 'pattern':
               error = {
                 code: 'PATTERN',
-                message: 'String does not match pattern: ' + o.schema.pattern,
+                message: 'String does not match pattern: ' + o.schema.pattern
               };
 
               break;
@@ -83,7 +83,7 @@
               error = {
                 code: 'MIN_LENGTH',
                 message: 'String is too short (' + o.data.length + ' chars), ' +
-                         'minimum ' + o.schema.minLength,
+                         'minimum ' + o.schema.minLength
               };
 
               break;
@@ -91,7 +91,7 @@
               error = {
                 code: 'MAX_LENGTH',
                 message: 'String is too long (' + o.data.length + ' chars), ' +
-                         'maximum ' + o.schema.maxLength,
+                         'maximum ' + o.schema.maxLength
               };
 
               break;
@@ -99,7 +99,7 @@
               error = {
                 code: 'ARRAY_LENGTH_SHORT',
                 message: 'Array is too short (' + o.data.length + '), ' +
-                         'minimum ' + o.schema.minItems,
+                         'minimum ' + o.schema.minItems
               };
 
               break;
@@ -107,14 +107,14 @@
               error = {
                 code: 'ARRAY_LENGTH_LONG',
                 message: 'Array is too long (' + o.data.length + '), maximum ' +
-                         o.schema.maxItems,
+                         o.schema.maxItems
               };
 
               break;
             case 'uniqueItems':
               error = {
                 code: 'ARRAY_UNIQUE',
-                message: 'Array items are not unique',
+                message: 'Array items are not unique'
               };
 
               break;
@@ -123,7 +123,7 @@
                 code: 'OBJECT_PROPERTIES_MINIMUM',
                 message: 'Too few properties defined (' +
                          Object.keys(o.data).length + '), minimum ' +
-                         o.schema.minProperties,
+                         o.schema.minProperties
               };
 
               break;
@@ -132,7 +132,7 @@
                 code: 'OBJECT_PROPERTIES_MAXIMUM',
                 message: 'Too many properties defined (' +
                          Object.keys(o.data).length + '), maximum ' +
-                         o.schema.maxProperties,
+                         o.schema.maxProperties
               };
 
               break;
@@ -140,14 +140,14 @@
               error = {
                 code: 'ENUM_MISMATCH',
                 message: 'No enum match (' + o.data + '), expects: ' +
-                         o.schema.enum.join(', '),
+                         o.schema['enum'].join(', ')
               };
 
               break;
             case 'not':
               error = {
                 code: 'NOT_PASSED',
-                message: 'Data matches schema from "not"',
+                message: 'Data matches schema from "not"'
               };
 
               break;
@@ -157,7 +157,7 @@
               error = {
                 code: 'ADDITIONAL_PROPERTIES',
                 message: 'Additional properties not allowed: ' +
-                         properties[properties.length - 1],
+                         properties[properties.length - 1]
               };
 
               break;
@@ -170,7 +170,7 @@
         if (!error) {
           error = {
             code: 'FAILED',
-            message: 'Validation error: ' + key,
+            message: 'Validation error: ' + key
           };
 
           try {
@@ -243,7 +243,7 @@
           env: o.env,
           schema: s || {},
           ns: o.ns + (isArray ? '[' + key + ']' : (o.sep + key)),
-          sep: o.sep,
+          sep: o.sep
         };
 
         try {
@@ -290,7 +290,7 @@
         validation: result.validation,
         sep: options.sep,
         ns: options.root,
-        definitions: schema.definitions || {},
+        definitions: schema.definitions || {}
       });
     };
   }
