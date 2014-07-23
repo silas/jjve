@@ -41,7 +41,7 @@
 
               break;
             case 'required':
-              properties = o.ns.split(o.sep);
+              properties = o.ns;
 
               error = {
                 code: 'OBJECT_REQUIRED',
@@ -154,7 +154,7 @@
 
               break;
             case 'additional':
-              properties = o.ns.split(o.sep);
+              properties = o.ns;
 
               error = {
                 code: 'ADDITIONAL_PROPERTIES',
@@ -236,13 +236,10 @@
           }
         }
 
-        var isArray = key.match(/^\d+$/);
-
         var opts = {
           env: o.env,
           schema: s || {},
-          ns: o.ns + (isArray ? '[' + key + ']' : (o.sep + key)),
-          sep: o.sep
+          ns: o.ns.concat(key)
         };
 
         try {
@@ -289,25 +286,52 @@
     return Object.prototype.toString.call(obj) === '[object Array]';
   }
 
+  function formatPath(options) {
+    var root = options.hasOwnProperty('root') ?
+      options.root : '$';
+
+    var sep = options.hasOwnProperty('sep') ?
+      options.sep : '.';
+
+    return function(error) {
+      var path = root;
+
+      error.path.forEach(function(key) {
+        path += key.match(/^\d+$/) ?
+          '[' + key + ']' :
+          key.match(/^[A-Z_$][0-9A-Z_$]*$/i) ?
+            (sep + key) :
+            ('[' + JSON.stringify(key) + ']');
+      });
+
+      error.path = path;
+
+      return error;
+    };
+  }
+
   function jjve(env) {
     return function jjve(schema, data, result, options) {
       if (!result || !result.validation) return [];
 
       options = options || {};
 
-      if (!options.hasOwnProperty('root')) options.root = '$';
-      if (!options.hasOwnProperty('sep')) options.sep = '.';
       if (typeof schema === 'string') { schema = env.schema[schema]; }
 
-      return make({
+      var errors = make({
         env: env,
         schema: schema,
         data: data,
         validation: result.validation,
-        sep: options.sep,
-        ns: options.root,
+        ns: [],
         definitions: schema.definitions || {}
       });
+
+      if (errors.length && options.formatPath !== false) {
+        return errors.map(formatPath(options));
+      }
+
+      return errors;
     };
   }
 
