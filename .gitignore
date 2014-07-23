@@ -1,2 +1,10 @@
+*.log
+*.pid
 *swp
+.env
+.rock.yml
+.vagrant
+config
+coverage
 node_modules
+tmp

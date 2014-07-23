@@ -1,6 +1,11 @@
+.env
 .jscs.json
 .jshintrc
+.npmignore
 .rock.yml
-.travis.yml
-example.js
+.vagrant
+Vagrantfile
+config
+coverage
 test
+tmp

@@ -4,6 +4,7 @@
   "description": "Render JJV errors",
   "main": "jjve.js",
   "devDependencies": {
+    "istanbul": "^0.3.0",
     "jjv": "^1.0.0",
     "jscs": "^1.4.5",
     "jshint": "^2.5.1",
