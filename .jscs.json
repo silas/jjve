@@ -23,12 +23,13 @@
   "disallowQuotedKeysInObjects": "allButReserved",
   "disallowSpaceAfterObjectKeys": true,
   "requireCommaBeforeLineBreak": true,
-  "requireOperatorBeforeLineBreak": [
+  "requireOperatorBeforeLineBreak": true,
+  "requireSpaceAfterBinaryOperators": [
     "?",
     "+",
-    "-",
     "/",
     "*",
+    ":",
     "=",
     "==",
     "===",
@@ -39,6 +40,7 @@
     "<",
     "<="
   ],
+  "requireSpacesInConditionalExpression": true,
   "disallowSpaceAfterPrefixUnaryOperators": ["++", "--", "+", "-", "~", "!"],
   "disallowSpaceBeforePostfixUnaryOperators": ["++", "--"],
   "requireSpaceBeforeBinaryOperators": [
@@ -73,5 +75,5 @@
   "requireCapitalizedConstructors": true,
   "safeContextKeyword": "self",
   "requireDotNotation": true,
-  "excludeFiles": ["node_modules/**"]
+  "excludeFiles": ["node_modules/**", "test/tmp/**"]
 }
