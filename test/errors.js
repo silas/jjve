@@ -356,6 +356,20 @@ describe('jjve', function() {
       ]);
     });
 
+    it('should handle format', function() {
+      var data = '192.168.0.432';
+      var schema = { type: 'string', format: 'ipv4' };
+
+      this.run(schema, data).should.eql([
+        {
+          code: 'VALIDATION_FORMAT',
+          data: '192.168.0.432',
+          message: 'Value does not satisfy format: ipv4',
+          path: '$'
+        }
+      ]);
+    });
+
     it('should handle arrays', function() {
       var data = {
         one: [
