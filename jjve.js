@@ -18,7 +18,6 @@
       // example: { required: true }
       keys.forEach(function(key) {
         var error, properties;
-
         try {
           switch (key) {
             case 'type':
@@ -160,6 +159,14 @@
                 code: 'ADDITIONAL_PROPERTIES',
                 message: 'Additional properties not allowed: ' +
                          properties[properties.length - 1]
+              };
+
+              break;
+            case 'format':
+              error = {
+                code: 'FORMAT',
+                message: 'Value does not satisfy format: ' +
+                         o.schema.format
               };
 
               break;
