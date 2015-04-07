@@ -1,9 +1,9 @@
 {
   "browser": true,
-  "jquery": true,
   "es3": true,
-  "node": true,
   "globals": {
+    "JSON": false,
+    "module": false,
     "describe": false,
     "it": false,
     "before": false,
