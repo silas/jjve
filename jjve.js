@@ -201,7 +201,7 @@
       keys.forEach(function(key) {
         var s;
 
-        if (o.schema.$ref) {
+        if (o.schema && o.schema.$ref) {
           if (o.schema.$ref.match(/#\/definitions\//)) {
             o.schema = o.definitions[o.schema.$ref.slice(14)];
           } else {
