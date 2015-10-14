@@ -212,6 +212,8 @@
             o.schema = o.env.resolveRef(null, o.schema);
             if (o.schema) o.schema = o.schema[0];
           }
+
+          if (!o.schema.type) o.schema.type = 'object';
         }
 
         if (o.schema && o.schema.type) {

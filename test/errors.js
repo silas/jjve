@@ -465,6 +465,38 @@ describe('jjve', function() {
       ]);
     });
 
+    it('should handle schema ref without a type defined', function() {
+      var data = { one: { two: '' } };
+
+      var ref = {
+        id: 'one',
+        properties: {
+          two: {
+            type: 'string',
+            minLength: 1,
+          }
+        }
+      };
+
+      var schema = {
+        type: 'object',
+        properties: {
+          one: { $ref: 'one' }
+        },
+      };
+
+      this.env.addSchema(ref);
+
+      this.run(schema, data).should.eql([
+        {
+          code: 'VALIDATION_MIN_LENGTH',
+          message: 'String is too short (0 chars), minimum 1',
+          data: '',
+          path: '$.one.two'
+        }
+      ]);
+    });
+
     it('should handle type property given as array where leaf schema is needed',
        function() {
       var data = { test: 'xyz' };
