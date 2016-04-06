@@ -497,6 +497,43 @@ describe('jjve', function() {
       ]);
     });
 
+    it('should handle schema ref which is an array and has definition with required properties', function() {
+      var data = { one: [{}] };
+      var ref = {
+        id: 'one',
+        type: 'array',
+        items: { $ref: '#/definitions/rest' },
+          definitions: {
+            rest: {
+              properties: {
+                two: {
+                  type: 'boolean'
+                }
+              },
+              required: ['two']
+            }
+          }
+      };
+
+      var schema = {
+        type: 'object',
+        properties: {
+          one: { $ref: 'one' }
+        },
+      };
+
+      this.env.addSchema(ref);
+
+      this.run(schema, data).should.eql([
+        {
+          code: 'VALIDATION_MIN_LENGTH',
+          message: 'String is too short (0 chars), minimum 1',
+          data: '',
+          path: '$.one.two'
+        }
+      ]);
+    });
+
     it('should handle type property given as array where leaf schema is needed',
        function() {
       var data = { test: 'xyz' };
