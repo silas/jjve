@@ -8,4 +8,5 @@
 config
 coverage
 node_modules
+.idea
 tmp
