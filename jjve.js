@@ -4,6 +4,23 @@
   function make(o) {
     var errors = [];
 
+    function isArray(obj) {
+      if (typeof Array.isArray === 'function') {
+        return Array.isArray(obj);
+      }
+      return Object.prototype.toString.call(obj) === '[object Array]';
+    }
+
+    function allowsType(schema, type) {
+      if (typeof schema.type === 'string') {
+        return schema.type === type;
+      }
+      if (isArray(schema.type)) {
+        return schema.type.indexOf(type) !== -1;
+      }
+      return false;
+    }
+
     var keys = Object.keys(o.validation);
 
     // when we're on a leaf node we need to handle the validation errors,
@@ -276,23 +293,6 @@
     }
 
     return errors;
-  }
-
-  function allowsType(schema, type) {
-    if (typeof schema.type === 'string') {
-      return schema.type === type;
-    }
-    if (isArray(schema.type)) {
-      return schema.type.indexOf(type) !== -1;
-    }
-    return false;
-  }
-
-  function isArray(obj) {
-    if (typeof Array.isArray === 'function') {
-      return Array.isArray(obj);
-    }
-    return Object.prototype.toString.call(obj) === '[object Array]';
   }
 
   function formatPath(options) {
