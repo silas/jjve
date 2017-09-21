@@ -1,6 +1,23 @@
 (function() {
   'use strict';
 
+  function isArray(obj) {
+    if (typeof Array.isArray === 'function') {
+      return Array.isArray(obj);
+    }
+    return Object.prototype.toString.call(obj) === '[object Array]';
+  }
+
+  function allowsType(schema, type) {
+    if (typeof schema.type === 'string') {
+      return schema.type === type;
+    }
+    if (isArray(schema.type)) {
+      return schema.type.indexOf(type) !== -1;
+    }
+    return false;
+  }
+
   function make(o) {
     var errors = [];
 
